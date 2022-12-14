@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shadow_api/models/webtoon_models.dart';
 import 'package:shadow_api/services/api_services.dart';
+import 'package:shadow_api/widgets/webtoon_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   Future<List<TodaysWebtoon>> webtoons = ApiServices.getTodaysWebtoon();
@@ -45,19 +46,10 @@ class HomeScreen extends StatelessWidget {
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              width: 250,
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
-                      offset: const Offset(10, 10),
-                      blurRadius: 10,
-                    )
-                  ]),
-              child: Image.network(webtoon.thumb),
+            Webtoon(
+              id: webtoon.id,
+              title: webtoon.title,
+              thumb: webtoon.thumb,
             ),
           ],
         );
