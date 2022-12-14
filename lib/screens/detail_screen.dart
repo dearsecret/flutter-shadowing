@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shadow_api/models/webtoon_models.dart';
+import 'package:shadow_api/services/api_services.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final String id, title, thumb;
   const DetailScreen({
     super.key,
@@ -10,15 +12,29 @@ class DetailScreen extends StatelessWidget {
   });
 
   @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  late Future<WebtoonDetail> detail;
+  late Future<List<Episodes>> episodes;
+  @override
+  void initState() {
+    super.initState();
+    detail = ApiServices.getDetail(widget.id);
+    episodes = ApiServices.getEpisodes(widget.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
         backgroundColor: Colors.black.withOpacity(0.8),
         foregroundColor: Colors.yellow.shade800,
-        title: const Text(
-          "Shadowing Webtoon App",
-          style: TextStyle(fontSize: 22),
+        title: Text(
+          widget.title,
+          style: const TextStyle(fontSize: 22),
         ),
       ),
       body: Column(
@@ -30,7 +46,7 @@ class DetailScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Hero(
-                tag: id,
+                tag: widget.id,
                 child: Container(
                     width: 250,
                     clipBehavior: Clip.hardEdge,
@@ -43,7 +59,7 @@ class DetailScreen extends StatelessWidget {
                             blurRadius: 10,
                           )
                         ]),
-                    child: Image.network(thumb)),
+                    child: Image.network(widget.thumb)),
               ),
             ],
           ),
